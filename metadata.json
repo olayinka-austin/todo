@@ -1,0 +1,6 @@
+{
+  "name": "Todo List with Reminders",
+  "description": "A collaborative, real-time syncing todo list application with cross-device synchronization and upcoming deadline reminder notifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

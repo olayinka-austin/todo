@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net (Pillar 4.1)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /todos/{todoId} {
+      // Direct document reads (Pillar 6)
+      allow get: if isSignedIn() && isOwner(existing());
+      
+      // Query enforcement (Pillar 8)
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      
+      // Todo creation with exact field and timestamp verification (Pillar 5 & PII)
+      allow create: if isSignedIn() 
+        && isVerifiedUser()
+        && isValidId(todoId)
+        && isValidTodo(incoming())
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+        
+      // Todo editing with metadata immutability and state rules (Pillar 4 & 12)
+      allow update: if isSignedIn()
+        && isVerifiedUser()
+        && isValidId(todoId)
+        && isOwner(existing())
+        && isValidTodo(incoming())
+        && incoming().userId == existing().userId
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time;
+        
+      // Deleting tasks owners own
+      allow delete: if isSignedIn()
+        && isVerifiedUser()
+        && isValidId(todoId)
+        && isOwner(existing());
+    }
+
+    // --- Hardened Global Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isVerifiedUser() {
+      // Mandate that the user is verified using request.auth.token.email_verified (Critical Constraint Detail)
+      return request.auth.token.email_verified == true;
+    }
+    
+    function isOwner(currData) {
+      return currData.userId == request.auth.uid;
+    }
+    
+    function incoming() {
+      return request.resource.data;
+    }
+    
+    function existing() {
+      return resource.data;
+    }
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    
+    function isValidTodo(data) {
+      // Exact keys checking to prevent Shadow Field / update leaks (Pillar 2)
+      return data.keys().hasAll(['title', 'completed', 'userId', 'priority', 'category', 'reminded', 'createdAt', 'updatedAt'])
+        && data.keys().size() <= 11
+        && data.title is string && data.title.size() <= 120
+        && data.completed is bool
+        && data.userId == request.auth.uid
+        && data.priority is string && (data.priority == 'low' || data.priority == 'medium' || data.priority == 'high')
+        && data.category is string && data.category.size() <= 50
+        && data.reminded is bool
+        && (!data.keys().hasAny(['description']) || (data.description is string && data.description.size() <= 1000))
+        && (!data.keys().hasAny(['deadlineTime']) || (data.deadlineTime is string && data.deadlineTime.size() <= 100));
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "Todo": {
+      "title": "Todo",
+      "description": "A single task containing a title, priority level, optional description, deadline, and real-time synchronization attributes.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the todo, mapping directly to the Firestore document ID."
+        },
+        "title": {
+          "type": "string",
+          "description": "Task title, restricted to reasonable size to prevent resource exhaustion."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the task."
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Completion state of the task."
+        },
+        "deadlineTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Optional deadline timestamp stored as an ISO 8601 string or numeric offset for deadline reminders."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The Firebase Authentication UID of the owner."
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Importance rating of the task."
+        },
+        "category": {
+          "type": "string",
+          "description": "Category group label for organizing tasks."
+        },
+        "reminded": {
+          "type": "boolean",
+          "description": "Audit flag tracking if the upcoming deadline reminder was presented to the user."
+        },
+        "createdAt": {
+          "type": "object",
+          "description": "The exact Firestore server timestamp of document creation."
+        },
+        "updatedAt": {
+          "type": "object",
+          "description": "The exact Firestore server timestamp of the latest edit."
+        }
+      },
+      "required": ["title", "completed", "userId", "priority", "category", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "todos/{todoId}": {
+      "schema": "Todo",
+      "description": "Flat, optimized collection for user-specific todos where query logic is locked to the authenticated user's ID."
+    }
+  }
+}
