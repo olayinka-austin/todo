@@ -10,5 +10,13 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #f8fafc; /* bg-slate-50 */
+  transition: background-color 0.2s ease, color 0.15s ease;
+}
+
+html {
+  background-color: #f8fafc; /* light: bg-slate-50 */
+}
+
+html.dark {
+  background-color: #0f172a; /* dark: bg-slate-900 */
 }

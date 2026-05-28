@@ -26,7 +26,7 @@ import { Todo, Priority } from './types';
 import AddTodoForm from './components/AddTodoForm';
 import TodoList from './components/TodoList';
 import DeadlineReminderBanner from './components/DeadlineReminderBanner';
-import { CheckSquare, LogOut, LogIn, BellRing, RefreshCw, UserCheck, HelpCircle, Inbox, Calendar, Clock, Laptop, Smartphone, Watch, Trash2, ChevronRight, X, Sparkles, Plus, Menu } from 'lucide-react';
+import { CheckSquare, LogOut, LogIn, BellRing, RefreshCw, UserCheck, HelpCircle, Inbox, Calendar, Clock, Laptop, Smartphone, Watch, Trash2, ChevronRight, X, Sparkles, Plus, Menu, Sun, Moon } from 'lucide-react';
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -39,6 +39,27 @@ export default function App() {
   const [selectedTodoId, setSelectedTodoId] = useState<string | null>(null);
   const [addFormOpen, setAddFormOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('theme-preference');
+      if (stored === 'dark') return true;
+      if (stored === 'light') return false;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
+  // Keep dark/light class in sync with darkMode preference state
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('theme-preference', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('theme-preference', 'light');
+    }
+  }, [darkMode]);
 
   // Listen to Firebase Auth state and handle browser connectivity events
   useEffect(() => {
@@ -329,7 +350,7 @@ export default function App() {
   }).length;
 
   return (
-    <div className="w-full h-screen bg-slate-50 flex font-sans text-slate-900 overflow-hidden relative">
+    <div className="w-full h-screen bg-slate-50 dark:bg-slate-950 flex font-sans text-slate-900 dark:text-slate-100 overflow-hidden relative transition-colors duration-300">
       
       {/* Sidebar background backdrop for mobile screens */}
       {isMobileSidebarOpen && (
@@ -344,14 +365,14 @@ export default function App() {
         fixed inset-y-0 left-0 z-50 lg:static lg:flex lg:translate-x-0
         transition-transform duration-300 ease-out
         ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-        w-64 bg-white border-r border-slate-200 flex flex-col h-full shrink-0
+        w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col h-full shrink-0
       `}>
-        <div className="p-6 flex items-center justify-between border-b border-slate-100/65">
+        <div className="p-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold font-display shadow-lg shadow-blue-105">
               S
             </div>
-            <span className="text-lg font-bold tracking-tight text-slate-800 font-display">SyncFlow</span>
+            <span className="text-lg font-bold tracking-tight text-slate-800 dark:text-slate-100 font-display">SyncFlow</span>
           </div>
           <span 
             className={`w-2.5 h-2.5 rounded-full ${
@@ -373,14 +394,14 @@ export default function App() {
         
         <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
           {/* Views sub-header */}
-          <div className="p-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Views</div>
+          <div className="p-2 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Views</div>
           
           <button
             onClick={() => { setActiveView('inbox'); setSelectedTodoId(null); setIsMobileSidebarOpen(false); }}
             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold select-none transition-all cursor-pointer ${
               activeView === 'inbox' 
-                ? 'bg-blue-50 text-blue-700' 
-                : 'text-slate-600 hover:bg-slate-55 hover:bg-slate-100/80 hover:text-slate-850'
+                ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300' 
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100/80 dark:hover:bg-slate-800 hover:text-slate-850 dark:hover:text-slate-200'
             }`}
           >
             <div className="flex items-center gap-2.5">
@@ -388,7 +409,7 @@ export default function App() {
               <span>Inbox</span>
             </div>
             {activeCount > 0 && (
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${activeView === 'inbox' ? 'bg-blue-100/80 text-blue-800' : 'bg-slate-150 bg-slate-100 text-slate-500'}`}>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${activeView === 'inbox' ? 'bg-blue-100/80 dark:bg-blue-900/55 text-blue-800 dark:text-blue-300' : 'bg-slate-100 dark:bg-slate-805 text-slate-500 dark:text-slate-400'}`}>
                 {activeCount}
               </span>
             )}
@@ -398,8 +419,8 @@ export default function App() {
             onClick={() => { setActiveView('today'); setSelectedTodoId(null); setIsMobileSidebarOpen(false); }}
             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold select-none transition-all cursor-pointer ${
               activeView === 'today' 
-                ? 'bg-blue-50 text-blue-700' 
-                : 'text-slate-600 hover:bg-slate-55 hover:bg-slate-100/80 hover:text-slate-850'
+                ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300' 
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100/80 dark:hover:bg-slate-800 hover:text-slate-850 dark:hover:text-slate-200'
             }`}
           >
             <div className="flex items-center gap-2.5">
@@ -407,7 +428,7 @@ export default function App() {
               <span>Today</span>
             </div>
             {todayCount > 0 && (
-              <span className="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">
+              <span className="text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-md">
                 {todayCount}
               </span>
             )}
@@ -417,8 +438,8 @@ export default function App() {
             onClick={() => { setActiveView('upcoming'); setSelectedTodoId(null); setIsMobileSidebarOpen(false); }}
             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold select-none transition-all cursor-pointer ${
               activeView === 'upcoming' 
-                ? 'bg-blue-50 text-blue-700' 
-                : 'text-slate-600 hover:bg-slate-55 hover:bg-slate-100/80 hover:text-slate-850'
+                ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300' 
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100/80 dark:hover:bg-slate-800 hover:text-slate-850 dark:hover:text-slate-205'
             }`}
           >
             <div className="flex items-center gap-2.5">
@@ -426,14 +447,14 @@ export default function App() {
               <span>Upcoming</span>
             </div>
             {upcomingCount > 0 && (
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${activeView === 'upcoming' ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-500'}`}>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${activeView === 'upcoming' ? 'bg-blue-100/80 dark:bg-blue-900/55 text-blue-800 dark:text-blue-300' : 'bg-slate-100 dark:bg-slate-805 text-slate-505 dark:text-slate-400'}`}>
                 {upcomingCount}
               </span>
             )}
           </button>
 
           {/* Projects sub-header */}
-          <div className="p-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest pt-5">Projects</div>
+          <div className="p-2 text-[10px] font-bold text-slate-404 dark:text-slate-500 uppercase tracking-widest pt-5">Projects</div>
           {['All', 'Work', 'Personal', 'Shopping', 'Health', 'Finance', 'Education', 'Other'].map((cat, idx) => {
             // Distinct bullet colors based on category
             const colors = [
@@ -449,8 +470,8 @@ export default function App() {
                 onClick={() => { setSelectedCategory(cat); setSelectedTodoId(null); setIsMobileSidebarOpen(false); }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold select-none transition-all cursor-pointer ${
                   selectedCategory === cat 
-                    ? 'bg-slate-100 text-slate-800 border-l-2 border-slate-700 font-bold' 
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800'
+                    ? 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-l-2 border-slate-700 dark:border-slate-505 font-bold' 
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -458,7 +479,7 @@ export default function App() {
                   <span>{cat}</span>
                 </div>
                 {catCount > 0 && (
-                  <span className="text-[10px] font-bold text-slate-400 px-1.5 py-0.5">
+                  <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 px-1.5 py-0.5">
                     {catCount}
                   </span>
                 )}
@@ -468,78 +489,89 @@ export default function App() {
         </nav>
 
         {/* Sync Status slot and User Identity controls */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/50 space-y-3 shrink-0">
-          <div className="flex items-center gap-2 px-1 text-[11px] font-semibold text-slate-500 select-none">
+        <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 space-y-3 shrink-0">
+          <div className="flex items-center gap-2 px-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400 select-none">
             {syncStatus === 'offline' ? (
               <>
                 <div className="w-2 h-2 rounded-full bg-rose-500" />
-                <span className="text-rose-600 font-bold">Offline (Cached Local Mode)</span>
+                <span className="text-rose-600 dark:text-rose-400 font-bold">Offline (Cached Local Mode)</span>
               </>
             ) : syncStatus === 'syncing' ? (
               <>
                 <RefreshCw className="w-3.5 h-3.5 text-blue-500 animate-spin" />
-                <span className="text-blue-600 font-bold">Synchronizing Cloud...</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold">Synchronizing Cloud...</span>
               </>
             ) : (
               <>
                 <Sparkles className="w-3.5 h-3.5 text-emerald-500 animate-pulse" />
-                <span className="text-emerald-700 font-bold">Cloud Live (Synced offline cache)</span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">Cloud Live (Synced offline cache)</span>
               </>
             )}
           </div>
 
-          <div className="flex items-center justify-between gap-1 p-1 bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <div className="flex items-center justify-between gap-1 p-1 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
             <div className="flex items-center gap-2 px-1 py-1 max-w-[150px] overflow-hidden select-none">
               {user.photoURL ? (
                 <img
                   src={user.photoURL}
                   alt={user.displayName || 'Me'}
                   referrerPolicy="no-referrer"
-                  className="w-7 h-7 rounded-lg border border-slate-100"
+                  className="w-7 h-7 rounded-lg border border-slate-100 dark:border-slate-700"
                 />
               ) : (
-                <div className="w-7 h-7 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-center text-xs">
+                <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-center text-xs">
                   {user.displayName?.charAt(0) || 'U'}
                 </div>
               )}
               <div className="text-left font-sans truncate">
-                <p className="text-[11px] font-bold text-slate-800 leading-tight truncate">
+                <p className="text-[11px] font-bold text-slate-800 dark:text-slate-100 leading-tight truncate">
                   {user.displayName}
                 </p>
-                <p className="text-[9px] text-slate-400 leading-none truncate">
+                <p className="text-[9px] text-slate-400 dark:text-slate-500 leading-none truncate">
                   {user.email}
                 </p>
               </div>
             </div>
 
-            <button
-              onClick={handleLogout}
-              className="p-1.5 text-slate-405 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all cursor-pointer"
-              title="Sign Out"
-              id="btn-sidebar-logout"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-0.5 px-1">
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-xl transition-all cursor-pointer mr-0.5"
+                title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                id="btn-sidebar-theme-toggle"
+              >
+                {darkMode ? <Sun className="w-4 h-4 text-amber-500 animate-spin-once" /> : <Moon className="w-4 h-4" />}
+              </button>
+
+              <button
+                onClick={handleLogout}
+                className="p-1.5 text-slate-405 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition-all cursor-pointer"
+                title="Sign Out"
+                id="btn-sidebar-logout"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </aside>
 
       {/* 2. Main Task Panel View */}
-      <main className="flex-1 flex flex-col h-full bg-white relative overflow-hidden">
-        <header className="h-20 border-b border-slate-100 flex items-center justify-between px-4 sm:px-8 shrink-0">
+      <main className="flex-1 flex flex-col h-full bg-white dark:bg-slate-900 relative overflow-hidden transition-colors duration-300">
+        <header className="h-20 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between px-4 sm:px-8 shrink-0">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsMobileSidebarOpen(true)}
-              className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-xl cursor-pointer"
+              className="lg:hidden p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl cursor-pointer"
               title="Open Menu"
             >
               <Menu className="w-5 h-5" />
             </button>
             <div>
-              <h1 className="text-base sm:text-xl font-bold text-slate-900 font-sans tracking-tight capitalize truncate max-w-[150px] sm:max-w-none">
+              <h1 className="text-base sm:text-xl font-bold text-slate-900 dark:text-slate-105 font-sans tracking-tight capitalize truncate max-w-[150px] sm:max-w-none">
                 {activeView === 'inbox' ? `${selectedCategory} Inbox` : activeView === 'today' ? 'Due Today' : 'Upcoming Tasks'}
               </h1>
-              <p className="text-[10px] sm:text-xs text-slate-500 font-sans mt-0.5">
+              <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-sans mt-0.5">
                 {new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
               </p>
             </div>
@@ -547,7 +579,7 @@ export default function App() {
           
           <button
             onClick={() => setAddFormOpen(!addFormOpen)}
-            className="bg-blue-600 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer text-xs"
+            className="bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold shadow-lg shadow-blue-100 dark:shadow-none hover:bg-blue-700 transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer text-xs"
             id="btn-header-new-task"
           >
             <Plus className="w-4 h-4" />
@@ -603,17 +635,17 @@ export default function App() {
         fixed inset-y-0 right-0 z-50 lg:static lg:flex
         transition-transform duration-300 ease-out
         ${selectedTodo ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
-        w-80 bg-slate-50 border-l border-slate-200 flex flex-col h-full shrink-0
+        w-80 bg-slate-50 dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col h-full shrink-0
         ${!selectedTodo ? 'hidden lg:flex' : 'flex'}
       `}>
         {selectedTodo ? (
           <div className="p-6 h-full flex flex-col justify-between" id="side-selected-todo-detail">
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Task Details</h2>
+                <h2 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Task Details</h2>
                 <button 
                   onClick={() => setSelectedTodoId(null)} 
-                  className="text-slate-400 hover:text-slate-650 cursor-pointer p-1 rounded-lg hover:bg-slate-200/50 transition-all"
+                  className="text-slate-400 dark:text-slate-500 hover:text-slate-650 dark:hover:text-slate-300 cursor-pointer p-1 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -621,20 +653,20 @@ export default function App() {
 
               <div className="space-y-6">
                 {/* Custom Title Details */}
-                <div className="p-4 bg-white rounded-xl shadow-xs border border-slate-200/80">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase">Title</label>
-                  <h4 className="font-semibold text-slate-800 text-sm mt-1">{selectedTodo.title}</h4>
+                <div className="p-4 bg-white dark:bg-slate-800 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-700/80">
+                  <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Title</label>
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-100 text-sm mt-1">{selectedTodo.title}</h4>
                   {selectedTodo.description && (
-                    <p className="text-xs text-slate-500 mt-2 bg-slate-50 p-2.5 rounded-lg border border-slate-100 max-h-[140px] overflow-y-auto">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800 max-h-[140px] overflow-y-auto">
                       {selectedTodo.description}
                     </p>
                   )}
                 </div>
 
                 {/* Deadline options */}
-                <div className="p-4 bg-white rounded-xl shadow-xs border border-slate-200/80">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase">Deadline Specifications</label>
-                  <div className="flex items-center gap-3 mt-2 text-slate-700">
+                <div className="p-4 bg-white dark:bg-slate-800 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-700/80">
+                  <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Deadline Specifications</label>
+                  <div className="flex items-center gap-3 mt-2 text-slate-700 dark:text-slate-300">
                     <Calendar className="w-4 h-4 text-blue-500" />
                     <span className="text-xs font-semibold">
                       {selectedTodo.deadlineTime ? new Date(selectedTodo.deadlineTime).toLocaleString() : 'No deadline active'}
@@ -643,14 +675,14 @@ export default function App() {
                 </div>
 
                 {/* Category specifications */}
-                <div className="p-4 bg-white rounded-xl shadow-xs border border-slate-200/80">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase">Category Tag</label>
+                <div className="p-4 bg-white dark:bg-slate-800 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-700/80">
+                  <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Category Tag</label>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xs bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-lg font-bold">
+                    <span className="text-xs bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-lg font-bold">
                       {selectedTodo.category}
                     </span>
                     <span className={`text-[10px] font-bold px-3 py-1 rounded-lg border capitalize ${
-                      selectedTodo.priority === 'high' ? 'bg-rose-50 text-rose-700 border-rose-150' : selectedTodo.priority === 'medium' ? 'bg-amber-50 text-amber-700 border-amber-100' : 'bg-emerald-50 text-emerald-700 border-emerald-100'
+                      selectedTodo.priority === 'high' ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-150 dark:border-rose-900/50' : selectedTodo.priority === 'medium' ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-305 border-amber-100 dark:border-amber-900/50' : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-100 dark:border-emerald-900/50'
                     }`}>
                       {selectedTodo.priority} Priority
                     </span>
@@ -658,18 +690,18 @@ export default function App() {
                 </div>
 
                 {/* Reminders Toggle status */}
-                <div className="p-4 bg-white rounded-xl shadow-xs border border-slate-200/80">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase">Upcoming Alerts</label>
+                <div className="p-4 bg-white dark:bg-slate-800 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-700/80">
+                  <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Upcoming Alerts</label>
                   <ul className="mt-2 space-y-2.5">
                     <li className="flex items-center justify-between text-xs">
-                      <span className="text-slate-600">24-hour notifications</span>
+                      <span className="text-slate-600 dark:text-slate-400">24-hour notifications</span>
                       <div className="w-8 h-4 bg-blue-600 rounded-full relative">
                         <div className="absolute right-0.5 top-0.5 w-3 h-3 bg-white rounded-full"></div>
                       </div>
                     </li>
                     <li className="flex items-center justify-between text-xs">
-                      <span className="text-slate-600">Dismissed alert on sync</span>
-                      <div className={`w-8 h-4 ${selectedTodo.reminded ? 'bg-blue-600' : 'bg-slate-200'} rounded-full relative transition-colors`}>
+                      <span className="text-slate-600 dark:text-slate-400">Dismissed alert on sync</span>
+                      <div className={`w-8 h-4 ${selectedTodo.reminded ? 'bg-blue-600' : 'bg-slate-200 dark:bg-slate-700'} rounded-full relative transition-colors`}>
                         <div className={`absolute ${selectedTodo.reminded ? 'right-0.5' : 'left-0.5'} top-0.5 w-3 h-3 bg-white rounded-full transition-all`}></div>
                       </div>
                     </li>
@@ -684,7 +716,7 @@ export default function App() {
                   await handleDeleteTodo(selectedTodo.id);
                   setSelectedTodoId(null);
                 }}
-                className="w-full py-3 text-xs font-bold text-rose-500 hover:text-white border border-rose-200 hover:bg-rose-600 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3 text-xs font-bold text-rose-500 hover:text-white border border-rose-200 dark:border-rose-900/55 hover:bg-rose-600 dark:hover:bg-rose-700 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 Delete Task Permanently
@@ -695,32 +727,32 @@ export default function App() {
           <div className="p-6 h-full flex flex-col justify-between" id="side-selected-todo-empty">
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans">Task Details</h2>
+                <h2 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest font-sans">Task Details</h2>
               </div>
               
-              <div className="p-4 bg-white/50 rounded-xl border border-dashed border-slate-200 text-center py-12 space-y-2.5">
-                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mx-auto">
+              <div className="p-4 bg-white/50 dark:bg-slate-800/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-850 text-center py-12 space-y-2.5">
+                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-900/80 flex items-center justify-center text-slate-400 dark:text-slate-505 mx-auto">
                   <Sparkles className="w-5 h-5" />
                 </div>
-                <p className="text-xs font-bold text-slate-500 mt-2 font-sans">No Task Selected</p>
-                <p className="text-[10.5px] text-slate-405 text-slate-400 max-w-[180px] leading-relaxed mx-auto">
+                <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-2 font-sans">No Task Selected</p>
+                <p className="text-[10.5px] text-slate-405 dark:text-slate-500 text-slate-400 max-w-[180px] leading-relaxed mx-auto">
                   Click on any task card within your inbox to show custom deadlines, sync details, and priority trackers.
                 </p>
               </div>
             </div>
 
             {/* Sync summary widget */}
-            <div className="p-4 bg-white rounded-2xl border border-slate-250/25 border-slate-100 shadow-sm space-y-3 font-sans">
-              <label className="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Sync Details</label>
+            <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-250/25 border-slate-100 dark:border-slate-755 shadow-sm space-y-3 font-sans">
+              <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase block tracking-wider">Sync Details</label>
               <div className="flex items-center gap-2 select-none">
                 <div className="flex -space-x-2">
-                  <div className="w-7 h-7 rounded-full bg-blue-50 border-2 border-white flex items-center justify-center text-[10px]" title="Laptop Slot Sync">💻</div>
-                  <div className="w-7 h-7 rounded-full bg-emerald-50 border-2 border-white flex items-center justify-center text-[10px]" title="Mobile Slot Sync">📱</div>
-                  <div className="w-7 h-7 rounded-full bg-purple-50 border-2 border-white flex items-center justify-center text-[10px]" title="Watch Slot Sync">⌚</div>
+                  <div className="w-7 h-7 rounded-full bg-blue-50 dark:bg-blue-950 border-2 border-white dark:border-slate-800 flex items-center justify-center text-[10px]" title="Laptop Slot Sync">💻</div>
+                  <div className="w-7 h-7 rounded-full bg-emerald-50 dark:bg-emerald-950 border-2 border-white dark:border-slate-800 flex items-center justify-center text-[10px]" title="Mobile Slot Sync">📱</div>
+                  <div className="w-7 h-7 rounded-full bg-purple-50 dark:bg-purple-950 border-2 border-white dark:border-slate-800 flex items-center justify-center text-[10px]" title="Watch Slot Sync">⌚</div>
                 </div>
-                <span className="text-[10px] font-bold text-slate-500 ml-1">Connected on 3 Devices</span>
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 ml-1">Connected on 3 Devices</span>
               </div>
-              <p className="text-[9.5px] text-slate-400 leading-normal">
+              <p className="text-[9.5px] text-slate-404 dark:text-slate-500 leading-normal">
                 Changes made here immediately synchronize to your phone and watch with real-time Firebase streams.
               </p>
             </div>

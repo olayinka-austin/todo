@@ -91,52 +91,52 @@ export default function TodoList({
   return (
     <div className="space-y-6" id="todo-list-container">
       {/* Dynamic Statistics Bar Component */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
-        <div className="bg-white p-3 rounded-xl border border-slate-100/80 shadow-xs flex items-center justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50/50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+        <div className="bg-white dark:bg-slate-800/80 p-3 rounded-xl border border-slate-100/80 dark:border-slate-700 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-xs text-slate-500 font-medium font-sans">Completion Rate</span>
-            <h5 className="text-xl font-bold text-indigo-700 font-sans mt-0.5">{progressPercent}%</h5>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium font-sans">Completion Rate</span>
+            <h5 className="text-xl font-bold text-indigo-700 dark:text-indigo-400 font-sans mt-0.5">{progressPercent}%</h5>
           </div>
-          <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+          <div className="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-300">
             <Activity className="w-5 h-5" />
           </div>
         </div>
-        <div className="bg-white p-3 rounded-xl border border-slate-100/80 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-800/80 p-3 rounded-xl border border-slate-100/80 dark:border-slate-700 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-xs text-slate-500 font-medium">Pending Tasks</span>
-            <h5 className="text-xl font-bold text-slate-700 mt-0.5">{totalCount - completedCount} / {totalCount}</h5>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Pending Tasks</span>
+            <h5 className="text-xl font-bold text-slate-700 dark:text-slate-200 mt-0.5">{totalCount - completedCount} / {totalCount}</h5>
           </div>
-          <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500">
+          <div className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400">
             <CheckCircle2 className="w-5 h-5" />
           </div>
         </div>
-        <div className="bg-white p-3 rounded-xl border border-slate-100/80 shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-800/80 p-3 rounded-xl border border-slate-100/80 dark:border-slate-700 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-xs text-slate-500 font-medium">Overdue Alerts</span>
-            <h5 className={`text-xl font-bold mt-0.5 ${overdueCount > 0 ? 'text-rose-600 animate-pulse' : 'text-slate-500'}`}>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Overdue Alerts</span>
+            <h5 className={`text-xl font-bold mt-0.5 ${overdueCount > 0 ? 'text-rose-600 dark:text-rose-450 animate-pulse' : 'text-slate-500 dark:text-slate-400'}`}>
               {overdueCount}
             </h5>
           </div>
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${overdueCount > 0 ? 'bg-rose-50 text-rose-600' : 'bg-slate-50 text-slate-500'}`}>
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${overdueCount > 0 ? 'bg-rose-50 dark:bg-rose-950/45 text-rose-600 dark:text-rose-300' : 'bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
             <AlertCircle className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Filters and Sorters Section */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-100 space-y-3.5 shadow-xs">
+      <div className="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 space-y-3.5 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <SlidersHorizontal className="w-4 h-4 text-slate-400" />
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Filter & Arrange</span>
+            <SlidersHorizontal className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+            <span className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest">Filter & Arrange</span>
           </div>
 
           <div className="flex select-none items-center gap-2">
-            <label className="text-xs text-slate-500 font-medium">Completed task state:</label>
+            <label className="text-xs text-slate-500 dark:text-slate-400 font-medium">Completed task state:</label>
             <button
               onClick={() => setShowCompleted(!showCompleted)}
               className={`px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition-all ${
-                showCompleted ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-slate-100 text-slate-500 border border-slate-200'
+                showCompleted ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-900' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-350 border border-slate-200 dark:border-slate-650'
               }`}
               id="btn-toggle-completed-visibility"
             >
@@ -148,15 +148,15 @@ export default function TodoList({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Category Filter selector */}
           <div className="space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">By Category</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider">By Category</span>
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-600 font-medium bg-white focus:outline-none focus:border-indigo-500"
+              className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 font-medium bg-white dark:bg-slate-900 focus:outline-none focus:border-indigo-500"
               id="filter-category"
             >
               {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>
+                <option key={cat} value={cat} className="dark:bg-slate-900 dark:text-slate-300">
                   {cat === 'All' ? 'All Categories' : cat}
                 </option>
               ))}
@@ -165,28 +165,28 @@ export default function TodoList({
 
           {/* Priority Filter selector */}
           <div className="space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">By Priority</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider">By Priority</span>
             <select
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value)}
-              className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-600 font-medium bg-white focus:outline-none focus:border-indigo-500"
+              className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 font-medium bg-white dark:bg-slate-900 focus:outline-none focus:border-indigo-500"
               id="filter-priority"
             >
-              <option value="All">All Priorities</option>
-              <option value="low">Low Priority</option>
-              <option value="medium">Medium Priority</option>
-              <option value="high">High Priority</option>
+              <option value="All" className="dark:bg-slate-900 dark:text-slate-303">All Priorities</option>
+              <option value="low" className="dark:bg-slate-900 dark:text-slate-303">Low Priority</option>
+              <option value="medium" className="dark:bg-slate-900 dark:text-slate-303">Medium Priority</option>
+              <option value="high" className="dark:bg-slate-900 dark:text-slate-303">High Priority</option>
             </select>
           </div>
 
           {/* Sorter Selector */}
           <div className="space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Sort Order</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider">Sort Order</span>
             <div className="flex gap-1.5">
               <button
                 onClick={() => setSortBy('deadline')}
                 className={`flex-1 py-1.5 rounded-lg border text-center text-xs font-semibold cursor-pointer ${
-                  sortBy === 'deadline' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                  sortBy === 'deadline' ? 'border-indigo-550 dark:border-indigo-500 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
                 title="Sort by nearest deadline"
               >
@@ -195,7 +195,7 @@ export default function TodoList({
               <button
                 onClick={() => setSortBy('priority')}
                 className={`flex-1 py-1.5 rounded-lg border text-center text-xs font-semibold cursor-pointer ${
-                  sortBy === 'priority' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                  sortBy === 'priority' ? 'border-indigo-550 dark:border-indigo-500 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
                 title="Sort by priority rating"
               >
@@ -204,7 +204,7 @@ export default function TodoList({
               <button
                 onClick={() => setSortBy('createdAt')}
                 className={`flex-1 py-1.5 rounded-lg border text-center text-xs font-semibold cursor-pointer ${
-                  sortBy === 'createdAt' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                  sortBy === 'createdAt' ? 'border-indigo-550 dark:border-indigo-500 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
                 title="Sort by creation date"
               >
@@ -223,12 +223,12 @@ export default function TodoList({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="py-12 px-6 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 space-y-2 bg-slate-50/20"
+              className="py-12 px-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-550 space-y-2 bg-slate-50/20 dark:bg-slate-900/10"
               id="empty-todos-visual"
             >
-              <CheckCircle2 className="w-10 h-10 text-slate-300 mx-auto stroke-1" />
-              <p className="text-sm font-semibold text-slate-500">You are all caught up!</p>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto">
+              <CheckCircle2 className="w-10 h-10 text-slate-300 dark:text-slate-700 mx-auto stroke-1" />
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">You are all caught up!</p>
+              <p className="text-xs text-slate-400 dark:text-slate-550 max-w-sm mx-auto">
                 No active tasks match your filters. Create a new task or adjust filters to begin.
               </p>
             </motion.div>
@@ -246,21 +246,26 @@ export default function TodoList({
 
               // Badges based on priority
               const priorityBadge = {
-                high: 'bg-rose-50 text-rose-700 border-rose-100',
-                medium: 'bg-amber-50 text-amber-700 border-amber-100',
-                low: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+                high: 'bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-950/40 dark:text-rose-303 dark:border-rose-900/50',
+                medium: 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-950/40 dark:text-amber-303 dark:border-amber-900/50',
+                low: 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-303 dark:border-emerald-900/50',
               };
 
               return (
                 <motion.div
                   key={todo.id}
-                  layoutId={todo.id}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className={`bg-white rounded-2xl border border-slate-100 border-l-4 ${priorityBorder[todo.priority]} p-4 sm:p-5 flex items-start gap-4 hover:shadow-sm hover:border-slate-205 transition-all select-none cursor-pointer ${
-                    selectedTodoId === todo.id ? 'bg-blue-50/20 ring-2 ring-blue-100 border-blue-200' : ''
+                  layout
+                  initial={{ opacity: 0, scale: 0.96, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96, y: -15 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 35,
+                    opacity: { duration: 0.18 },
+                  }}
+                  className={`w-full bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-755 border-l-4 ${priorityBorder[todo.priority]} p-4 sm:p-5 flex items-start gap-4 hover:shadow-sm hover:border-slate-205 dark:hover:border-slate-705 transition-all select-none cursor-pointer ${
+                    selectedTodoId === todo.id ? 'bg-blue-50/20 dark:bg-blue-950/20 ring-2 ring-blue-100 dark:ring-blue-900/50 border-blue-200 dark:border-blue-800' : ''
                   }`}
                   id={`todo-item-${todo.id}`}
                   onClick={() => onSelectTodo?.(todo.id)}
@@ -271,11 +276,11 @@ export default function TodoList({
                       e.stopPropagation();
                       onToggleComplete(todo.id, todo.completed);
                     }}
-                    className="pt-0.5 text-slate-400 hover:text-indigo-600 transition-colors cursor-pointer shrink-0"
+                    className="pt-0.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer shrink-0"
                     id={`btn-complete-${todo.id}`}
                   >
                     {todo.completed ? (
-                      <CheckCircle2 className="w-5 h-5 text-indigo-600 fill-indigo-50 animate-bounce" />
+                      <CheckCircle2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400 fill-indigo-50 dark:fill-indigo-950/20 animate-bounce" />
                     ) : (
                       <Circle className="w-5 h-5" />
                     )}
@@ -286,7 +291,7 @@ export default function TodoList({
                     <div className="flex items-center gap-2 flex-wrap pb-0.5">
                       <span
                         className={`font-semibold text-sm truncate ${
-                          todo.completed ? 'text-slate-400 line-through' : 'text-slate-800'
+                          todo.completed ? 'text-slate-400 dark:text-slate-550 line-through' : 'text-slate-800 dark:text-slate-100'
                         }`}
                       >
                         {todo.title}
@@ -298,26 +303,26 @@ export default function TodoList({
                       </span>
 
                       {/* Category label */}
-                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-350 border border-slate-200 dark:border-slate-755 shrink-0">
                         {todo.category}
                       </span>
                     </div>
 
                     {todo.description && (
-                      <p className={`text-xs ${todo.completed ? 'text-slate-350 line-through' : 'text-slate-500'} break-words whitespace-pre-wrap`}>
+                      <p className={`text-xs ${todo.completed ? 'text-slate-350 dark:text-slate-550 line-through' : 'text-slate-500 dark:text-slate-450'} break-words whitespace-pre-wrap`}>
                         {todo.description}
                       </p>
                     )}
 
                     {/* Deadline & Overdue alarms */}
                     {todo.deadlineTime && (
-                      <div className="flex items-center gap-1.5 text-xs text-slate-500 flex-wrap pt-0.5">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className={isOverdue ? 'text-rose-600 font-semibold' : ''}>
+                      <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-450 flex-wrap pt-0.5">
+                        <Calendar className="w-3.5 h-3.5 text-slate-400 dark:text-slate-550 shrink-0" />
+                        <span className={isOverdue ? 'text-rose-600 dark:text-rose-405 font-semibold' : ''}>
                           {deadlineDate?.toLocaleString()}
                         </span>
                         {isOverdue && (
-                          <span className="text-[10px] bg-rose-100 text-rose-800 font-bold px-1.5 py-0.5 rounded-sm flex items-center gap-1 leading-none shrink-0 animate-pulse">
+                          <span className="text-[10px] bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 font-bold px-1.5 py-0.5 rounded-sm flex items-center gap-1 leading-none shrink-0 animate-pulse">
                             <Clock className="w-2.5 h-2.5" /> OVERDUE
                           </span>
                         )}
@@ -334,7 +339,7 @@ export default function TodoList({
                           e.stopPropagation();
                           onUpdatePriority(todo.id, todo.priority === 'low' ? 'medium' : todo.priority === 'medium' ? 'high' : 'low');
                         }}
-                        className="text-[10px] hover:bg-slate-50 border border-slate-100 rounded-md px-1.5 py-1 font-semibold text-slate-500 cursor-pointer"
+                        className="text-[10px] hover:bg-slate-50 dark:hover:bg-slate-750 border border-slate-100 dark:border-slate-700 rounded-md px-1.5 py-1 font-semibold text-slate-500 dark:text-slate-400 cursor-pointer bg-transparent"
                         title="Cycle priority"
                       >
                         Priority ↑
@@ -346,7 +351,7 @@ export default function TodoList({
                         e.stopPropagation();
                         onDelete(todo.id);
                       }}
-                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer"
+                      className="p-1.5 text-slate-405 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-all cursor-pointer"
                       title="Delete task permanently"
                       id={`btn-delete-${todo.id}`}
                     >
